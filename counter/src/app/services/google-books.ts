@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs';
-import { Book } from '@app/reducers/models';
+import { Book } from '@app/models/book';
 import { map } from 'rxjs/operators';
 
 

@@ -7,29 +7,30 @@ import { Observable, empty, of } from 'rxjs';
 import { map,debounceTime,switchMap,takeUntil,skip,catchError } from 'rxjs/operators';
 
 import { GoogleBooksService } from '@app/services/google-books';
-import { SEARCH,SearchCompleteAction } from '@app/reducers/actions'
+import  * as actions from '@app/actions/book'
 
 @Injectable()
 export class BookEffects {
 
   @Effect()
   search$: Observable<Action> = this.actions$.pipe(
-    ofType(SEARCH),
+    ofType(actions.SEARCH),
     debounceTime(300),
     switchMap(query => {
-      if (query === '') {
+      const {payload} = query;
+      if (payload === '') {
         return empty();
       }
 
       const nextSearch$ = this.actions$.pipe(
-        ofType(SEARCH),
+        ofType(actions.SEARCH),
         skip(1)
       )
-
-     return this.googleBooks.searchBooks(query).pipe(
+       
+     return this.googleBooks.searchBooks(payload).pipe(
         takeUntil(nextSearch$),
-        map(books => new SearchCompleteAction(books)),
-        catchError(error=>of(new SearchCompleteAction(error)))
+        map(books => new actions.SearchCompleteAction(books)),
+        catchError(error=>of(new actions.SearchCompleteAction(error)))
       )
     })
   );
