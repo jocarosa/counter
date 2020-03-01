@@ -27,6 +27,7 @@ import {GoogleBooksService} from '@app/services/google-books'
     HttpModule,
     CommonModule,
     AppRoutingModule,
+    
     StoreModule.forRoot(reducer),
     StoreRouterConnectingModule.forRoot(),
     EffectsModule.forRoot([BookEffects,CollectionEffects]),
